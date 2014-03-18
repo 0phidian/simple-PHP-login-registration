@@ -10,7 +10,8 @@
 			if($name == $uname){
 				echo "Sorry username ".$uname." has been taken.";
 			}else{
-				$salt = mcrypt_create_iv(16);
+				$size = mcrypt_get_iv_size(MCRYPT_CAST_256, MCRYPT_MODE_CFB);
+				$salt = mcrypt_create_iv($size, MCRYPT_DEV_URANDOM);
 				$hash = hash('sha256', $salt.$passwd);
 				$reg_query = "INSERT INTO users(username, password, salt) VALUES ('".mysql_real_escape_string($uname)."','".mysql_real_escape_string($hash)."','".$salt."')";
 				if($run_query = mysql_query($reg_query)){
